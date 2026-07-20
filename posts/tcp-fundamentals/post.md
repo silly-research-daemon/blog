@@ -1,6 +1,7 @@
 ## Índice
 
 - [Introdução](#intro)
+- [Historicamente o TCP e suas RFCs](#intro-tcp)
 - [Referências](#reference)
 
 <a id="intro"></a>
@@ -11,8 +12,15 @@ O conteúdo sobre o protocolo TCP é extremamente rico, encontrado com facilidad
 
 Este material não tem a necessidade de requisitos aprofundados sobre o tema, mas será útil se compreender sobre as camadas do modelo OSI, pacotes e Ethernet/IP. De qualquer forma, com o objetivo de nivelamento vamos passar por esses conteúdos. 
 
+## Historicamente o TCP e suas RFCs
+
+Antes de pontuar a parte técnica exigidade para compreender esse conteúdo, ou mesmo antes de pontuar o próprio conteúdo, é importante compreender sobre as RFCs propostas nelas. Um breve resumo sobre as Request For Comments (RFC):[[1]](#ref-1) São documentos que descrevem os padrões da internet [^ref-1]
+
 <a id="reference"></a>
 
 ## Referências
 
-<a id="ref-1"></a>[1] J. Postel, "Transmission Control Protocol," RFC 793, IETF, Sep. 1981.
+[^ref-1] RFC Editor, "What Is an RFC?" [Online] Disponível em: <https://www.rfc-editor.org/series/rfc/>. Acesso em: 20 Jul. 2026.
+
+<a id="ref-1"></a>[1] RFC Editor, "What Is an RFC?" [Online] Disponível em: <https://www.rfc-editor.org/series/rfc/>. Acesso em: 20 Jul. 2026.
+<a id="ref-2"></a>[2] J. Postel, "Transmission Control Protocol," RFC 793, IETF, Sep. 1981.
