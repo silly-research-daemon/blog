@@ -5,6 +5,7 @@ on:
     branches: [main]
 
 permissions:
+  id-token: write
   contents: read
 
 concurrency:
@@ -35,6 +36,22 @@ jobs:
           sudo apt-get install -y musl-tools
           cargo build --release --target x86_64-unknown-linux-musl
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
+          aws-region: us-east-1
+
+      - name: Open SSH ingress for runner
+        id: firewall
+        run: |
+          ip=$(curl -s https://checkip.amazonaws.com | tr -d '[:space:]')
+          echo "runner_ip=$ip" >> "$GITHUB_OUTPUT"
+          aws ec2 authorize-security-group-ingress \
+            --group-id "${{ secrets.AWS_SG_ID }}" \
+            --ip-permissions "IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges=[{CidrIp=$ip/32,Description=github-actions-deploy}]" \
+            || echo "ingress rule already present"
+
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
@@ -53,3 +70,11 @@ jobs:
           rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" static/ "$remote:$app/static/"
           rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" posts/ "$remote:$app/posts/"
           ssh -i ~/.ssh/id_ed25519 "$remote" "mv $app/jwcbmat-blog.new $app/jwcbmat-blog && chmod +x $app/jwcbmat-blog && sudo systemctl restart jwcbmat-blog"
+
+      - name: Close SSH ingress for runner
+        if: always() && steps.firewall.outputs.runner_ip != ''
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id "${{ secrets.AWS_SG_ID }}" \
+            --ip-permissions "IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges=[{CidrIp=${{ steps.firewall.outputs.runner_ip }}/32}]" \
+            || echo "ingress rule already removed"
