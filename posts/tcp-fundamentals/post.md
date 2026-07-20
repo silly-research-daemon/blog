@@ -27,6 +27,6 @@ A RFC 793 explica que o TCP baseia-se em conceitos descritos por Cerf e Kahn no 
 ## Referências
 
 <a id="ref-1"></a>[1] RFC Editor, "What Is an RFC?" [Online] Disponível em: <https://www.rfc-editor.org/series/rfc/>. Acesso em: 20 Jul. 2026.\
-<a id="ref-2"></a>[2] J. Postel, "Transmission Control Protocol" RFC 793, [Online] Disponível em: <https://datatracker.ietf.org/doc/html/rfc793#page-iii>. Acesso em: 20 Jul. 2026.
-<a id="ref-3"></a>[3] W. Eddy, "Transmission Control Protocol (TCP)" RFC 9293, [Online] Disponível em: <https://datatracker.ietf.org/doc/html/rfc9293>. Acesso em: 20 Jul. 2026.
+<a id="ref-2"></a>[2] J. Postel, "Transmission Control Protocol" RFC 793, [Online] Disponível em: <https://datatracker.ietf.org/doc/html/rfc793#page-iii>. Acesso em: 20 Jul. 2026.\
+<a id="ref-3"></a>[3] W. Eddy, "Transmission Control Protocol (TCP)" RFC 9293, [Online] Disponível em: <https://datatracker.ietf.org/doc/html/rfc9293>. Acesso em: 20 Jul. 2026.\
 <a id="ref-4"></a>[4] Cerf, V., and R. Kahn, "A Protocol for Packet Network Intercommunication", IEEE Transactions on Communications, [Online] Disponível em: <https://www.cs.princeton.edu/courses/archive/fall06/cos561/papers/cerf74.pdf>. Acesso em: 20 Jul. 2026.
