@@ -1,0 +1,8 @@
+title = 'Fundamentos TCP e implementação em Rust.'
+file_name = 'tcp-fundamentals'
+description = 'Conceitos TCP via wireshark com implementação em Rust'
+tags = ['TCP', 'Rust', 'Tutorial', 'Wireshark']
+posted = '20/07/2026'
+estimated_reading_time = 13
+author = 'Johnathan Bruns'
+order = 1
