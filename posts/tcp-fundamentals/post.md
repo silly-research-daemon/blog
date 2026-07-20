@@ -12,13 +12,21 @@ O conteúdo sobre o protocolo TCP é extremamente rico, encontrado com facilidad
 
 Este material não tem a necessidade de requisitos aprofundados sobre o tema, mas será útil se compreender sobre as camadas do modelo OSI, pacotes e Ethernet/IP. De qualquer forma, com o objetivo de nivelamento vamos passar por esses conteúdos. 
 
+<a id="intro-tcp"></a>
+
 ## Historicamente o TCP e suas RFCs
 
-Antes de pontuar a parte técnica exigidade para compreender esse conteúdo, ou mesmo antes de pontuar o próprio conteúdo, é importante compreender sobre as RFCs propostas nelas. Um breve resumo sobre as Request For Comments (RFC):[1](#ref-1) São documentos que descrevem os padrões da internet
+Antes de iniciar a parte técnica fundamental ou mesmo antes de pontuar o próprio conteúdo, é importante compreender sobre as RFCs escritas sobre o TCP. 
+
+As Requests For Comments (RFCs) são documentos que descrevem os padrões da internet, métodos, pesquisas e estudos relacionado a sistemas conectados à internet. Como explica o RFC Editor, qualquer pessoa pode participar da criação de RFCs, podendo se juntar a qualquer grupo de trabalho do interesse [\[1\]](#ref-1). Uma vez publicado, uma RFCs não pode ser alterada, se houver alterações ou atualizações uma nova RFC deve ser registrada, deixando a antiga obsoleta. Para nosso estudos, vamos nos basear em duas RFCs, a RFC 793 "Transmission Control Protocol" publicada em 1981 por Jon Postel [\[2\]](#ref-2) e a RFC 9293 "Transmission Control Protocol (TCP)" publicada em 2022 por Wesley Eddy [\[3\]](#ref-3).
+
+A RFC 793 explica que o TCP baseia-se em conceitos descritos por Cerf e Kahn no artigo "A Protocol for Packet Network Intercommunication" [\[4\]](#ref-4). Embora o design proposto ali tenha sido amplamente superado, na época o "TCP" de Cerf e Kahn ainda era um protocolo único, sem a separação entre TCP e IP, que veio só na segunda metade dos anos 1970.
 
 <a id="reference"></a>
 
 ## Referências
 
 <a id="ref-1"></a>[1] RFC Editor, "What Is an RFC?" [Online] Disponível em: <https://www.rfc-editor.org/series/rfc/>. Acesso em: 20 Jul. 2026.\
-<a id="ref-2"></a>[2] J. Postel, "Transmission Control Protocol," RFC 793, IETF, Sep. 1981.
+<a id="ref-2"></a>[2] J. Postel, "Transmission Control Protocol" RFC 793, [Online] Disponível em: <https://datatracker.ietf.org/doc/html/rfc793#page-iii>. Acesso em: 20 Jul. 2026.
+<a id="ref-3"></a>[3] W. Eddy, "Transmission Control Protocol (TCP)" RFC 9293, [Online] Disponível em: <https://datatracker.ietf.org/doc/html/rfc9293>. Acesso em: 20 Jul. 2026.
+<a id="ref-4"></a>[4] Cerf, V., and R. Kahn, "A Protocol for Packet Network Intercommunication", IEEE Transactions on Communications, [Online] Disponível em: <https://www.cs.princeton.edu/courses/archive/fall06/cos561/papers/cerf74.pdf>. Acesso em: 20 Jul. 2026.
