@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ meta_data.title }} | Awesome blog{% endblock title %}
+
+{% block content %}
+<article class="w-full px-4 md:px-6 py-8">
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 leading-tight">{{ meta_data.title }}</h1>
+    <p class="mt-2 text-lg text-gray-600">{{ meta_data.description }}</p>
+    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3 text-sm text-gray-500">
+      <span>{{ meta_data.author }}</span>
+      <span>&middot;</span>
+      <span>{{ meta_data.posted }}</span>
+      <span>&middot;</span>
+      <span>Reading time: {{ meta_data.estimated_reading_time }} min</span>
+    </div>
+  </header>
+
+  <div class="prose prose-lg max-w-none">
+    {{ post | safe }}
+  </div>
+
+  <div class="mt-10">
+    <a class="text-blue-600 hover:underline" href="/">&larr; Back to all posts</a>
+  </div>
+</article>
+{% endblock content %}

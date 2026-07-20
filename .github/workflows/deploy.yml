@@ -1,0 +1,55 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: musl-cargo-${{ hashFiles('Cargo.lock') }}
+          restore-keys: musl-cargo-
+
+      - name: Build release binary
+        run: |
+          rustup target add x86_64-unknown-linux-musl
+          sudo apt-get update
+          sudo apt-get install -y musl-tools
+          cargo build --release --target x86_64-unknown-linux-musl
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy
+        run: |
+          host="${{ secrets.DEPLOY_HOST }}"
+          remote="deploy@$host"
+          app=/opt/jwcbmat-blog
+          binary=target/x86_64-unknown-linux-musl/release/jwcbmat-blog
+          rsync -az -e "ssh -i ~/.ssh/id_ed25519" "$binary" "$remote:$app/jwcbmat-blog.new"
+          rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" templates/ "$remote:$app/templates/"
+          rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" static/ "$remote:$app/static/"
+          rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" posts/ "$remote:$app/posts/"
+          ssh -i ~/.ssh/id_ed25519 "$remote" "mv $app/jwcbmat-blog.new $app/jwcbmat-blog && chmod +x $app/jwcbmat-blog && sudo systemctl restart jwcbmat-blog"
