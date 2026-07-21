@@ -48,5 +48,5 @@ O conjunto de protocolos TCP/IP foi desenvolvido antes do modelo OSI, então o T
 <a id="ref-1"></a>[1] RFC Editor, "What Is an RFC?," [Online]. Disponível em: <https://www.rfc-editor.org/series/rfc/>. Acesso em: 20 jul. 2026.\
 <a id="ref-2"></a>[2] W. Eddy, "Transmission Control Protocol (TCP)," RFC 9293, 2022. [Online]. Disponível em: <https://datatracker.ietf.org/doc/html/rfc9293>. Acesso em: 20 jul. 2026.\
 <a id="ref-3"></a>[3] J. Postel, "Transmission Control Protocol," RFC 793, 1981. [Online]. Disponível em: <https://datatracker.ietf.org/doc/html/rfc793>. Acesso em: 20 jul. 2026.\
-<a id="ref-4"></a>[4] V. Cerf e R. Kahn, "A Protocol for Packet Network Intercommunication," *IEEE Transactions on Communications*, vol. 22, no. 5, pp. 637–648, 1974. [Online]. Disponível em: <https://www.cs.princeton.edu/courses/archive/fall06/cos561/papers/cerf74.pdf>. Acesso em: 20 jul. 2026.\
+<a id="ref-4"></a>[4] V. Cerf e R. Kahn, 1974 "A Protocol for Packet Network Intercommunication," [Online]. Disponível em: <https://www.cs.princeton.edu/courses/archive/fall06/cos561/papers/cerf74.pdf>. Acesso em: 20 jul. 2026.\
 <a id="ref-5"></a>[5] B. A. Forouzan, *Comunicação de Dados e Redes de Computadores*, 4. ed. Porto Alegre: AMGH, 2008, seç. 2.4, p. 74.
