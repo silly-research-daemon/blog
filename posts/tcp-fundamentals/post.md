@@ -31,20 +31,22 @@ Ainda comentando sobre a visão pela RFC 793, o TCP tinha como objetivo principa
 
 Como diz a RFC 9293, "[TCP provides a reliable, in-order, byte-stream service to applications](https://datatracker.ietf.org/doc/html/rfc9293#section-2.2-1)" (em tradução livre: "o TCP fornece às aplicações um serviço de fluxo de bytes confiável e ordenado"). Isso significa que uma conexão é estabelecida entre dois processos. O protocolo em si é simétrico: nenhum dos lados é privilegiado. Os termos cliente e servidor descrevem apenas quem inicia a conexão.
 
-O conjunto de protocolos TCP/IP foi desenvolvido antes do modelo OSI, então o TCP/IP não corresponde exatamente as camadas do modelo OSI. O TCP/IP foi planejado inicialmente tendo quatro camadas: <strong>host-rede, internet, transporte e aplicação</strong> e o modelo OSI foi planejado com 7 camadas, sendo elas: <strong>física, enlace de dados, rede, transporte, sessão, apresentação e aplicação</strong>, porém Behrouz A. Forouzan nos apresenta a ideia, comparando o TCP/IP ao modelo OSI, podemos ter uma ideia de:
+O conjunto de protocolos TCP/IP foi desenvolvido antes do modelo OSI, então o TCP/IP não corresponde exatamente as camadas do modelo OSI. O TCP/IP foi originalmente definido em quatro camadas <strong>(host-rede, internet, transporte e aplicação)</strong>, enquanto o modelo OSI tem sete <strong>(física, enlace de dados, rede, transporte, sessão, apresentação e aplicação)</strong>. Forouzan [\[5\]](#ref-5) propõe uma leitura em cinco camadas, desmembrando host-rede em física e enlace para aproximar a comparação do OSI.
 
-| Camada TCP/IP | Equivalente a | Camada(s) OSI |
-|---|:---:|---|
-| Host-rede | = | Física + Enlace de dados |
-| Internet | = | Rede |
-| Transporte | = | Transporte (+ parte das funções de sessão) |
-| Aplicação | = | Sessão (parte) + Apresentação + Aplicação |
+| Camada TCP/IP (Forouzan) | Camada(s) OSI correspondente(s) |
+|---|---|
+| Física | Física |
+| Enlace | Enlace de dados |
+| Rede | Rede |
+| Transporte | Transporte (+ parte da sessão) |
+| Aplicação | Sessão (parte) + Apresentação + Aplicação |
 
 <a id="reference"></a>
 
 ## Referências
 
-<a id="ref-1"></a>[1] RFC Editor, "What Is an RFC?" [Online] Disponível em: <https://www.rfc-editor.org/series/rfc/>. Acesso em: 20 Jul. 2026.\
-<a id="ref-2"></a>[2] W. Eddy, "Transmission Control Protocol (TCP)" RFC 9293, [Online] Disponível em: <https://datatracker.ietf.org/doc/html/rfc9293>. Acesso em: 20 Jul. 2026.\
-<a id="ref-3"></a>[3] J. Postel, "Transmission Control Protocol" RFC 793, [Online] Disponível em: <https://datatracker.ietf.org/doc/html/rfc793>. Acesso em: 20 Jul. 2026.\
-<a id="ref-4"></a>[4] Cerf, V., and R. Kahn, "A Protocol for Packet Network Intercommunication", IEEE Transactions on Communications, [Online] Disponível em: <https://www.cs.princeton.edu/courses/archive/fall06/cos561/papers/cerf74.pdf>. Acesso em: 20 Jul. 2026.
+<a id="ref-1"></a>[1] RFC Editor, "What Is an RFC?," [Online]. Disponível em: <https://www.rfc-editor.org/series/rfc/>. Acesso em: 20 jul. 2026.\
+<a id="ref-2"></a>[2] W. Eddy, "Transmission Control Protocol (TCP)," RFC 9293, 2022. [Online]. Disponível em: <https://datatracker.ietf.org/doc/html/rfc9293>. Acesso em: 20 jul. 2026.\
+<a id="ref-3"></a>[3] J. Postel, "Transmission Control Protocol," RFC 793, 1981. [Online]. Disponível em: <https://datatracker.ietf.org/doc/html/rfc793>. Acesso em: 20 jul. 2026.\
+<a id="ref-4"></a>[4] V. Cerf e R. Kahn, "A Protocol for Packet Network Intercommunication," *IEEE Transactions on Communications*, vol. 22, no. 5, pp. 637–648, 1974. [Online]. Disponível em: <https://www.cs.princeton.edu/courses/archive/fall06/cos561/papers/cerf74.pdf>. Acesso em: 20 jul. 2026.\
+<a id="ref-5"></a>[5] B. A. Forouzan, *Comunicação de Dados e Redes de Computadores*, 4. ed. Porto Alegre: AMGH, 2008, seç. 2.4, p. 74.
