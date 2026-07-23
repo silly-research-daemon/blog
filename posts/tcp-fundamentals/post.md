@@ -90,6 +90,13 @@ No.  Time         Source     Destination  Proto  Len  Info
 
 *Listagem 1 — Captura na interface `lo`, filtro `tcp.port == 34254`.*
 
+Então, fazemos um vinculo para ouvir a porta `:34254` usando o TcpListener.
+
+```rust-lang
+// movendo o TcpStream para handle_client
+
+```
+
 <a id="reference"></a>
 
 ## Referências

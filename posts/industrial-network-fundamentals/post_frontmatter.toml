@@ -1,0 +1,8 @@
+title = '[ESCREVENDO] Fundamentação para Redes Industriais'
+file_name = 'industrial-network-fundamentals'
+description = 'Documentação de estudo para fundamentação de redes industriais'
+tags = ['Network', 'Tutorial', 'Wireshark']
+posted = '23/07/2026'
+estimated_reading_time = 13
+author = 'Johnathan Bruns'
+order = 2
