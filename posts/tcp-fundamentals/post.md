@@ -4,6 +4,7 @@
 - [Historicamente o TCP e suas RFCs](#intro-tcp)
 - [Fundamentação](#fundamentals)
 - [Referências](#reference)
+- [Construindo com Rust](#build-with-rust)
 
 <a id="intro"></a>
 
@@ -41,6 +42,26 @@ O conjunto de protocolos TCP/IP foi desenvolvido antes do modelo OSI, então o T
 | Transporte | Transporte (+ parte da sessão) |
 | Aplicação | Sessão (parte) + Apresentação + Aplicação |
 
+<a id="build-with-rust"></a>
+
+Após um longo tempo revendo a teoria sobre TCP, compreendemos seu funcionamento. Então para começarmos aplicando isso, vamos desenvolver uma conexão TCP com rust. O objetivo de escolhermos Rust se da pelo fato de eu estar ativamente estudando ele, é uma linguagem que admiro e particularmente gosto (em um momento pretendo também escrever sobre isso). 
+
+Vou partir da ideia que você já tem um script inicial sendo um main.rs (`cargo new your-project-name`). Para você ter um contexto maior, recomendo a leitura do módulo <strong>net</strong> do rust [\[6\]](#ref-6), tem bibliotecas mais recomendadas para construir uma comunicação TCP/IP mas antes de aprofundarmos em alguma abstração quero construir um caminho sólido. No módulo <strong>net</strong> temos duas funcionalidades importantes para a comunicação via TCP: `TcpListener` [\[7\]](#ref-7) e `TcpStream` [\[8\]](#ref-8).
+
+```rust
+use std::io::prelude::*;
+use std::net::TcpStream;
+
+fn main() -> std::io::Result<()> {
+  let mut stream = TcpStream::connect("127.0.0.1:34254");
+
+  stream.write(&[1])?;
+  stream.read(&mut [0; 128])?;
+
+  Ok(())
+}
+```
+
 <a id="reference"></a>
 
 ## Referências
@@ -50,3 +71,6 @@ O conjunto de protocolos TCP/IP foi desenvolvido antes do modelo OSI, então o T
 <a id="ref-3"></a>[3] J. Postel, "Transmission Control Protocol," RFC 793, 1981. [Online]. Disponível em: <https://datatracker.ietf.org/doc/html/rfc793>. Acesso em: 20 jul. 2026.\
 <a id="ref-4"></a>[4] V. Cerf e R. Kahn, 1974 "A Protocol for Packet Network Intercommunication," [Online]. Disponível em: <https://www.cs.princeton.edu/courses/archive/fall06/cos561/papers/cerf74.pdf>. Acesso em: 20 jul. 2026.\
 <a id="ref-5"></a>[5] B. A. Forouzan, *Comunicação de Dados e Redes de Computadores*, 4. ed. Porto Alegre: AMGH, 2008, seç. 2.4, p. 74.
+<a id="ref-6"></a>[6] "Module net," The Rust Standard Library. [Online]. Disponível em: <https://doc.rust-lang.org/std/net/index.html>. Acesso em: 23 jul. 2026.\
+<a id="ref-7"></a>[7] "Struct TcpListener," The Rust Standard Library. [Online]. Disponível em: <https://doc.rust-lang.org/std/net/struct.TcpListener.html>. Acesso em: 23 jul. 2026.\
+<a id="ref-8"></a>[8] "Struct TcpStream," The Rust Standard Library. [Online]. Disponível em: <https://doc.rust-lang.org/std/net/struct.TcpStream.html>. Acesso em: 23 jul. 2026.\
