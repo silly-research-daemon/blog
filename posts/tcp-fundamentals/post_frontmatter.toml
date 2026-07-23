@@ -1,4 +1,4 @@
-title = 'Fundamentos TCP e implementação em Rust.'
+title = '[ESCREVENDO] Fundamentos TCP e implementação em Rust.'
 file_name = 'tcp-fundamentals'
 description = 'Conceitos TCP via wireshark com implementação em Rust'
 tags = ['TCP', 'Rust', 'Tutorial', 'Wireshark']

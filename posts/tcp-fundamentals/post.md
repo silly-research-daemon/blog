@@ -3,8 +3,8 @@
 - [Introdução](#intro)
 - [Historicamente o TCP e suas RFCs](#intro-tcp)
 - [Fundamentação](#fundamentals)
-- [Referências](#reference)
 - [Construindo com Rust](#build-with-rust)
+- [Referências](#reference)
 
 <a id="intro"></a>
 
@@ -32,7 +32,7 @@ Ainda comentando sobre a visão pela RFC 793, o TCP tinha como objetivo principa
 
 Como diz a RFC 9293, "[TCP provides a reliable, in-order, byte-stream service to applications](https://datatracker.ietf.org/doc/html/rfc9293#section-2.2-1)" (em tradução livre: "o TCP fornece às aplicações um serviço de fluxo de bytes confiável e ordenado"). Isso significa que uma conexão é estabelecida entre dois processos. O protocolo em si é simétrico: nenhum dos lados é privilegiado. Os termos cliente e servidor descrevem apenas quem inicia a conexão.
 
-O conjunto de protocolos TCP/IP foi desenvolvido antes do modelo OSI, então o TCP/IP não corresponde exatamente as camadas do modelo OSI. O TCP/IP foi originalmente definido em quatro camadas <strong>(host-rede, internet, transporte e aplicação)</strong>, enquanto o modelo OSI tem sete <strong>(física, enlace de dados, rede, transporte, sessão, apresentação e aplicação)</strong>. Forouzan [\[5\]](#ref-5) propõe uma leitura em cinco camadas, desmembrando host-rede em física e enlace para aproximar a comparação do OSI.
+O conjunto de protocolos TCP/IP foi desenvolvido antes do modelo OSI, então o TCP/IP não corresponde exatamente as camadas do modelo OSI. O TCP/IP foi originalmente definido em quatro camadas <strong>(host-rede, internet, transporte e aplicação)</strong>, enquanto o modelo OSI tem sete <strong>(física, enlace de dados, rede, transporte, sessão, apresentação e aplicação)</strong>. Forouzan, autor do livro Comunicações de Dados e Redes de computadores [\[5\]](#ref-5) propõe uma leitura em cinco camadas, desmembrando host-rede em física e enlace para aproximar a comparação do OSI.
 
 | Camada TCP/IP (Forouzan) | Camada(s) OSI correspondente(s) |
 |---|---|
@@ -46,9 +46,15 @@ O conjunto de protocolos TCP/IP foi desenvolvido antes do modelo OSI, então o T
 
 ## Construindo com Rust
 
-Após um longo tempo revendo a teoria sobre TCP, compreendemos seu funcionamento. Então para começarmos aplicando isso, vamos desenvolver uma conexão TCP com rust. O objetivo de escolhermos Rust se da pelo fato de eu estar ativamente estudando ele, é uma linguagem que admiro e particularmente gosto (em um momento pretendo também escrever sobre isso). 
+Após um longo tempo revendo a teoria sobre TCP e seus fundamentos, compreendemos seu funcionamento. Então para começarmos aplicando isso, vamos desenvolver uma conexão TCP em Rust. O objetivo de escolhermos Rust se da pelo fato de eu estar ativamente estudando ele, é uma linguagem que admiro e particularmente gosto (em um momento pretendo também escrever sobre isso).
 
-Vou partir da ideia que você já tem um script inicial sendo um main.rs (`cargo new your-project-name`). Para você ter um contexto maior, recomendo a leitura do módulo <strong>net</strong> do rust [\[6\]](#ref-6), tem bibliotecas mais recomendadas para construir uma comunicação TCP/IP mas antes de aprofundarmos em alguma abstração quero construir um caminho sólido. No módulo <strong>net</strong> temos duas funcionalidades importantes para a comunicação via TCP: `TcpListener` [\[7\]](#ref-7) e `TcpStream` [\[8\]](#ref-8).
+### Iniciando conexão TCP com Rust
+
+Vou partir da ideia que você já tem um script inicial sendo um main.rs (`cargo new your-project-name`). Para você ter um contexto maior, recomendo a leitura do módulo <strong>net</strong> do rust [\[6\]](#ref-6), existem bibliotecas mais recomendadas para construir uma comunicação TCP/IP mas antes de aprofundarmos em alguma abstração quero construir um caminho sólido.
+
+No módulo <strong>net</strong> temos duas funcionalidades importantes para a comunicação via TCP: `TcpListener` [\[7\]](#ref-7) e `TcpStream` [\[8\]](#ref-8).
+
+Vamos iniciar construindo uma conexão local para a porta `:34254`.
 
 ```rust-lang
 use std::io::prelude::*;
@@ -64,7 +70,7 @@ fn main() -> std::io::Result<()> {
 }
 ```
 
-Ok, isso é o suficiente para conectarmos a uma porta `:34254` em uma conexão TCP. Mas, isso nos entrega um erro:
+Ok, isso é o suficiente para conectarmos a uma porta `:34254` em uma conexão TCP. Mas, rodando esse script, vamos receber um erro:
 
 ```
 Error: Os { code: 111, kind: ConnectionRefused, message: "Connection refused" }
@@ -72,7 +78,7 @@ Error: Os { code: 111, kind: ConnectionRefused, message: "Connection refused" }
 
 *111 é o errno do <strong>LINUX</strong> para `ECONNREFUSED` em outro sistema operacional o número muda, o erro não.*
 
-Vale apena pararmos um pouco aqui para compreender. Estamos aqui fazendo uma chamada `connect()`, e a pilha TCP monta e envia um segmento SYN para a `127.0.0.1:34254`. Do outro lado o kernel procura um socket em estado <strong>LISTEN</strong> naquela porta `:34254` e não encontra nada (porque ainda não criamos nada que esta <strong>VINCULADA</strong> aquela porta/serviço). A RFC 9293 explica que nesse caso, se a conexão não existe (estado <strong>CLOSED</strong>), um <strong>RESET</strong> é enviado em resposta a qualquer segmento que chegue, exceto outro <strong>RESET</strong>. Veja mais sobre na seção 3.5.2 [\[2\]](#ref-2) da RFC 9293. 
+Vale apena pararmos um pouco aqui para compreender. Estamos fazendo uma chamada `connect()`, e a pilha TCP monta e envia um segmento SYN para a `127.0.0.1:34254`. Do outro lado o kernel procura um socket em estado <strong>LISTEN</strong> naquela porta `:34254` e não encontra nada (porque ainda não criamos nada que esta <strong>VINCULADA</strong> aquela porta/serviço). A RFC 9293 explica que nesse caso, se a conexão não existe (estado <strong>CLOSED</strong>), um <strong>RESET</strong> é enviado em resposta a qualquer segmento que chegue, exceto outro <strong>RESET</strong>. Veja mais sobre na seção 3.5.2 [\[2\]](#ref-2) da RFC 9293. 
 
 Ou seja: a máquina responde com um <strong>RST</strong>. O `connect()` recebe esse reset e desiste da conexão e então retora com o <strong>erro 111</strong>.
 
