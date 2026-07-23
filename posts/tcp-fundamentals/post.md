@@ -44,16 +44,18 @@ O conjunto de protocolos TCP/IP foi desenvolvido antes do modelo OSI, então o T
 
 <a id="build-with-rust"></a>
 
+## Construindo com Rust
+
 Após um longo tempo revendo a teoria sobre TCP, compreendemos seu funcionamento. Então para começarmos aplicando isso, vamos desenvolver uma conexão TCP com rust. O objetivo de escolhermos Rust se da pelo fato de eu estar ativamente estudando ele, é uma linguagem que admiro e particularmente gosto (em um momento pretendo também escrever sobre isso). 
 
 Vou partir da ideia que você já tem um script inicial sendo um main.rs (`cargo new your-project-name`). Para você ter um contexto maior, recomendo a leitura do módulo <strong>net</strong> do rust [\[6\]](#ref-6), tem bibliotecas mais recomendadas para construir uma comunicação TCP/IP mas antes de aprofundarmos em alguma abstração quero construir um caminho sólido. No módulo <strong>net</strong> temos duas funcionalidades importantes para a comunicação via TCP: `TcpListener` [\[7\]](#ref-7) e `TcpStream` [\[8\]](#ref-8).
 
-```rust
+```rust-lang
 use std::io::prelude::*;
 use std::net::TcpStream;
 
 fn main() -> std::io::Result<()> {
-  let mut stream = TcpStream::connect("127.0.0.1:34254");
+  let mut stream = TcpStream::connect("127.0.0.1:34254")?;
 
   stream.write(&[1])?;
   stream.read(&mut [0; 128])?;
@@ -62,6 +64,26 @@ fn main() -> std::io::Result<()> {
 }
 ```
 
+Ok, isso é o suficiente para conectarmos a uma porta `:34254` em uma conexão TCP. Mas, isso nos entrega um erro:
+
+```
+Error: Os { code: 111, kind: ConnectionRefused, message: "Connection refused" }
+```
+
+*111 é o errno do <strong>LINUX</strong> para `ECONNREFUSED` em outro sistema operacional o número muda, o erro não.*
+
+Vale apena pararmos um pouco aqui para compreender. Estamos aqui fazendo uma chamada `connect()`, e a pilha TCP monta e envia um segmento SYN para a `127.0.0.1:34254`. Do outro lado o kernel procura um socket em estado <strong>LISTEN</strong> naquela porta `:34254` e não encontra nada (porque ainda não criamos nada que esta <strong>VINCULADA</strong> aquela porta/serviço). A RFC 9293 explica que nesse caso, se a conexão não existe (estado <strong>CLOSED</strong>), um <strong>RESET</strong> é enviado em resposta a qualquer segmento que chegue, exceto outro <strong>RESET</strong>. Veja mais sobre na seção 3.5.2 [\[2\]](#ref-2) da RFC 9293. 
+
+Ou seja: a máquina responde com um <strong>RST</strong>. O `connect()` recebe esse reset e desiste da conexão e então retora com o <strong>erro 111</strong>.
+
+```
+No.  Time         Source     Destination  Proto  Len  Info
+1    0.000000000  127.0.0.1  127.0.0.1    TCP    74   33208 → 34254 [SYN] Seq=0 Win=43690 Len=0 MSS=65495 SACK_PERM TSval=762580800 TSecr=0 WS=512
+2    0.000018228  127.0.0.1  127.0.0.1    TCP    54   34254 → 33208 [RST, ACK] Seq=1 Ack=1 Win=0 Len=0
+```
+
+*Listagem 1 — Captura na interface `lo`, filtro `tcp.port == 34254`.*
+
 <a id="reference"></a>
 
 ## Referências
@@ -69,8 +91,8 @@ fn main() -> std::io::Result<()> {
 <a id="ref-1"></a>[1] RFC Editor, "What Is an RFC?," [Online]. Disponível em: <https://www.rfc-editor.org/series/rfc/>. Acesso em: 20 jul. 2026.\
 <a id="ref-2"></a>[2] W. Eddy, "Transmission Control Protocol (TCP)," RFC 9293, 2022. [Online]. Disponível em: <https://datatracker.ietf.org/doc/html/rfc9293>. Acesso em: 20 jul. 2026.\
 <a id="ref-3"></a>[3] J. Postel, "Transmission Control Protocol," RFC 793, 1981. [Online]. Disponível em: <https://datatracker.ietf.org/doc/html/rfc793>. Acesso em: 20 jul. 2026.\
-<a id="ref-4"></a>[4] V. Cerf e R. Kahn, 1974 "A Protocol for Packet Network Intercommunication," [Online]. Disponível em: <https://www.cs.princeton.edu/courses/archive/fall06/cos561/papers/cerf74.pdf>. Acesso em: 20 jul. 2026.\
-<a id="ref-5"></a>[5] B. A. Forouzan, *Comunicação de Dados e Redes de Computadores*, 4. ed. Porto Alegre: AMGH, 2008, seç. 2.4, p. 74.
+<a id="ref-4"></a>[4] V. Cerf e R. Kahn, "A Protocol for Packet Network Intercommunication," *IEEE Transactions on Communications*, vol. COM-22, no. 5, pp. 637–648, maio 1974. [Online]. Disponível em: <https://www.cs.princeton.edu/courses/archive/fall06/cos561/papers/cerf74.pdf>. Acesso em: 20 jul. 2026.\
+<a id="ref-5"></a>[5] B. A. Forouzan, *Comunicação de Dados e Redes de Computadores*, 4. ed. Porto Alegre: AMGH, 2008, seç. 2.4, p. 74. \
 <a id="ref-6"></a>[6] "Module net," The Rust Standard Library. [Online]. Disponível em: <https://doc.rust-lang.org/std/net/index.html>. Acesso em: 23 jul. 2026.\
 <a id="ref-7"></a>[7] "Struct TcpListener," The Rust Standard Library. [Online]. Disponível em: <https://doc.rust-lang.org/std/net/struct.TcpListener.html>. Acesso em: 23 jul. 2026.\
 <a id="ref-8"></a>[8] "Struct TcpStream," The Rust Standard Library. [Online]. Disponível em: <https://doc.rust-lang.org/std/net/struct.TcpStream.html>. Acesso em: 23 jul. 2026.\
